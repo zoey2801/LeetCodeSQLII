@@ -1,0 +1,34 @@
+Table: Calls
+
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| from_id     | int     |
+| to_id       | int     |
+| duration    | int     |
++-------------+---------+
+This table does not have a primary key, it may contain duplicates.
+This table contains the duration of a phone call between from_id and to_id.
+from_id != to_id
+
+
+###PROBLEM:
+
+Write an SQL query to report the number of calls and the total call duration 
+between each pair of distinct persons (person1, person2) where person1 < person2.
+
+Return the result table in any order.
+
+###SOLUTION:
+
+SELECT from_id as person1, 
+        to_id as person2,
+        COUNT(to_id) as call_count,
+        SUM(duration) as total_duration
+FROM calls
+GROUP BY CASE
+            WHEN from_id < to_id THEN from_id ELSE to_id END,
+         CASE
+            WHEN from_id > to_id THEN from_id ELSE to_id END
+
+          
